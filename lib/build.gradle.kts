@@ -69,6 +69,8 @@ java {
     toolchain {
         languageVersion = JavaLanguageVersion.of(21)
     }
+    withSourcesJar()
+    withJavadocJar()
 }
 
 tasks.named<Test>("test") {
@@ -210,14 +212,4 @@ tasks.withType<Detekt>().configureEach {
 
 tasks.withType<DetektCreateBaselineTask>().configureEach {
     jvmTarget = "1.8"
-}
-
-// Apply a specific Java toolchain to ease working on different environments.
-java {
-    withSourcesJar()
-    withJavadocJar()
-
-    toolchain {
-        languageVersion = JavaLanguageVersion.of(21)
-    }
 }
