@@ -10,15 +10,15 @@ import org.jetbrains.kotlin.konan.properties.Properties
  * For more details on building Java & JVM projects, please refer to https://docs.gradle.org/9.4.1/userguide/building_java_projects.html in the Gradle documentation.
  */
 group = "tech.s-co"
-version = "0.1.0"
+version = "0.1.2"
 gitVersioning.apply {
     refs {
         tag("(?<version>.*)") {
             version = "\${ref.version}"
         }
-        branch(".+") {
-            version = "\${ref}-SNAPSHOT"
-        }
+//        branch(".+") {
+//            version = "\${ref}-SNAPSHOT"
+//        }
         considerTagsOnBranches = true
     }
     // optional fallback configuration in case of no matching ref configuration
