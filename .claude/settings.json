@@ -1,0 +1,16 @@
+{
+  "hooks": {
+    "PreToolUse": [
+      {
+        "matcher": "Read|Grep|Glob",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "/opt/homebrew/bin/kotlin ./hooks/read_permission_check.main.kts",
+            "timeout": 30
+          }
+        ]
+      }
+    ]
+  }
+}

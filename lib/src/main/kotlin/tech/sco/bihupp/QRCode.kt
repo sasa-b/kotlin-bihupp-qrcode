@@ -75,9 +75,6 @@ enum class ImageFormat {
 
 fun QRCodeByteArray.toBase64Link(): String = "data:${format.mime};base64,${Base64.encode(bytes)}"
 
-/**
- * Class that'll create the [SVGQRCodeGraphics] instances that'll be used to draw the QRCode
- */
 class SVGGraphicsFactory : QRCodeGraphicsFactory() {
     override fun newGraphics(
         width: Int,
