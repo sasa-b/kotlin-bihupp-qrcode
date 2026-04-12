@@ -5,7 +5,6 @@ import kotlin.test.assertEquals
 import kotlin.test.assertFailsWith
 
 class PaymentPurposeTest {
-
     @Test
     fun `creates with valid purpose`() {
         val purpose = PaymentPurpose.of("Invoice payment")

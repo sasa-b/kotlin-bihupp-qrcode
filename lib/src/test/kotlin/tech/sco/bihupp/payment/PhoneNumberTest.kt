@@ -35,11 +35,11 @@ class PhoneNumberTest {
 
     @Test
     fun `accepts various international country codes`() {
-        assertEquals("+12025551234", PhoneNumber.of("+12025551234").value)    // US
-        assertEquals("+447911123456", PhoneNumber.of("+447911123456").value)  // UK
-        assertEquals("+38761234567", PhoneNumber.of("+38761234567").value)    // Bosnia
-        assertEquals("+38591234567", PhoneNumber.of("+38591234567").value)    // Croatia
-        assertEquals("+38161234567", PhoneNumber.of("+38161234567").value)    // Serbia
+        assertEquals("+12025551234", PhoneNumber.of("+12025551234").value) // US
+        assertEquals("+447911123456", PhoneNumber.of("+447911123456").value) // UK
+        assertEquals("+38761234567", PhoneNumber.of("+38761234567").value) // Bosnia
+        assertEquals("+38591234567", PhoneNumber.of("+38591234567").value) // Croatia
+        assertEquals("+38161234567", PhoneNumber.of("+38161234567").value) // Serbia
     }
 
     @Test

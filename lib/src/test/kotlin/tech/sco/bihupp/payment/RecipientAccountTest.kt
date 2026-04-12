@@ -7,10 +7,11 @@ import kotlin.test.assertFailsWith
 class RecipientAccountTest {
     @Test
     fun `creates with valid account list`() {
-        val account = RecipientAccount.of(
-            Account("1234567890123456"),
-            Account("9876543210987654"),
-        )
+        val account =
+            RecipientAccount.of(
+                Account("1234567890123456"),
+                Account("9876543210987654"),
+            )
 
         assertEquals("1234567890123456,9876543210987654", account.value)
     }
@@ -24,10 +25,11 @@ class RecipientAccountTest {
 
     @Test
     fun `creates from multiple accounts`() {
-        val account = RecipientAccount.of(
-            Account("1234567890123456"),
-            Account("9876543210987654"),
-        )
+        val account =
+            RecipientAccount.of(
+                Account("1234567890123456"),
+                Account("9876543210987654"),
+            )
 
         assertEquals("1234567890123456,9876543210987654", account.value)
     }

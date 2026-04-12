@@ -20,6 +20,7 @@ data class PaymentInstruction(
     val publicRevenue: PublicRevenueInstruction? = null,
 ) {
     /** Returns the ordered lines of the payload. The order must not change. */
+    @Suppress("CyclomaticComplexMethod")
     fun lines(): List<Line> =
         buildList {
             add(Version())

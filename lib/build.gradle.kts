@@ -190,16 +190,16 @@ deployer {
 detekt {
     buildUponDefaultConfig = true // preconfigure defaults
     allRules = false // activate all available (even unstable) rules.
-    config.setFrom("$projectDir/src/main/resources/detekt.yml") // point to your custom config defining rules to run, overwriting default behavior
+    config.setFrom("$projectDir/src/main/resources/detekt.yml")
 //    baseline = file("$projectDir/config/baseline.xml") // a way of suppressing issues before introducing detekt
 }
 
 tasks.withType<Detekt>().configureEach {
     reports {
-        html.required.set(true) // observe findings in your browser with structure and code snippets
-        xml.required.set(false) // checkstyle like format mainly for integrations like Jenkins
-        sarif.required.set(false) // standardized SARIF format (https://sarifweb.azurewebsites.net/) to support integrations with GitHub Code Scanning
-        md.required.set(true) // simple Markdown format
+        html.required.set(true)
+        xml.required.set(false)
+        sarif.required.set(false)
+        md.required.set(true)
     }
 }
 
