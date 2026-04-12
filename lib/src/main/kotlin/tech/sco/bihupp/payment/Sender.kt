@@ -21,17 +21,21 @@ data class Sender(
  * Spaces are stripped automatically. Max 15 characters.
  */
 class PhoneNumber private constructor(
-    override val value: String,
+    value: String,
 ) : Line() {
+    override val value: String = value.replace(" ", "")
+
     init {
-        check(value.startsWith("+")) {
+        check(this.value.startsWith("+")) {
             "Phone number must be in E.164 format starting with +."
         }
-        value.checkLengthAndChars("PhoneNumber", MAX_LENGTH)
+        this.value.checkLengthAndChars("PhoneNumber", MAX_LENGTH)
     }
 
     companion object {
         const val MAX_LENGTH = 15
+
+        val EMPTY = PhoneNumber("+387".padEnd(MAX_LENGTH, '0'))
 
         fun of(value: String): PhoneNumber = PhoneNumber(value.replace(" ", ""))
     }

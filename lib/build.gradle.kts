@@ -54,13 +54,12 @@ repositories {
 dependencies {
     implementation(libs.qrcode)
     implementation(libs.jfree.svg)
+    implementation(libs.zxing)
 
     // Use the Kotlin Test integration.
     testImplementation(kotlin("test"))
-
     // Use the JUnit 5 integration.
     testImplementation(libs.junit.jupiter.engine)
-
     testRuntimeOnly(libs.junit.platform.launcher)
 }
 

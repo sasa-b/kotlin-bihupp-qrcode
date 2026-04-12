@@ -2,8 +2,6 @@
 # https://docs.gradle.org/current/userguide/version_catalogs.html#sec::toml-dependencies-format
 
 [versions]
-commons-math3 = "3.6.1"
-guava = "33.5.0-jre"
 junit-jupiter-engine = "6.0.1"
 version-catalog-update = "1.0.1"
 qrcode = "4.3.0"
@@ -12,14 +10,14 @@ maven-deployer = "0.18.0"
 jfree-svg = "5.0.7"
 pinterest-ktlint = "14.0.1"
 detekt = "1.23.0"
+zxing = "3.5.3"
 
 [libraries]
-commons-math3 = { module = "org.apache.commons:commons-math3", version.ref = "commons-math3" }
-guava = { module = "com.google.guava:guava", version.ref = "guava" }
 junit-jupiter-engine = { module = "org.junit.jupiter:junit-jupiter-engine", version.ref = "junit-jupiter-engine" }
 junit-platform-launcher = { module = "org.junit.platform:junit-platform-launcher" }
 qrcode = { module = "io.github.g0dkar:qrcode-kotlin", version.ref = "qrcode" }
-jfree-svg = {module = "org.jfree:org.jfree.svg", version.ref = "jfree-svg" }
+jfree-svg = { module = "org.jfree:org.jfree.svg", version.ref = "jfree-svg" }
+zxing = { module = "com.google.zxing:core", version.ref = "zxing" }
 
 [plugins]
 kotlin-jvm = { id = "org.jetbrains.kotlin.jvm", version = "2.3.0" }

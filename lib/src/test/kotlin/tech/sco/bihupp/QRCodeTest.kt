@@ -13,8 +13,13 @@ import tech.sco.bihupp.payment.PaymentReference
 import tech.sco.bihupp.payment.Recipient
 import tech.sco.bihupp.payment.RecipientAccount
 import tech.sco.bihupp.payment.Sender
+import tech.sco.bihupp.qrcode.ImageFormat
+import tech.sco.bihupp.qrcode.QRCodeByteArray
+import tech.sco.bihupp.qrcode.of
+import tech.sco.bihupp.qrcode.toBase64Link
 import kotlin.test.Test
 import kotlin.test.assertEquals
+import kotlin.test.assertNotEquals
 import kotlin.test.assertTrue
 
 class QRCodeTest {
@@ -82,5 +87,21 @@ class QRCodeTest {
         val result = QRCode.of(payment, ImageFormat.SVG).toBase64Link()
 
         assertTrue(result.startsWith("data:image/svg+xml;base64,"))
+    }
+
+    @Test
+    fun `QRCodeByteArray can be compared for equality`() {
+        val bytes = byteArrayOf(1, 2, 3)
+
+        val a = QRCodeByteArray(bytes, ImageFormat.PNG)
+        val b = QRCodeByteArray(bytes.copyOf(), ImageFormat.PNG)
+        val differentFormat = QRCodeByteArray(bytes.copyOf(), ImageFormat.SVG)
+        val differentBytes = QRCodeByteArray(byteArrayOf(4, 5, 6), ImageFormat.PNG)
+
+        assertEquals(a, b)
+        assertEquals(a.hashCode(), b.hashCode())
+
+        assertNotEquals(a, differentFormat)
+        assertNotEquals(a, differentBytes)
     }
 }

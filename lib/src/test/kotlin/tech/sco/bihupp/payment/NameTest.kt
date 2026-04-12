@@ -14,7 +14,7 @@ class NameTest {
 
     @Test
     fun `creates business name`() {
-        val name = Name.business("ACME Corporation")
+        val name = Name.of("ACME Corporation")
 
         assertEquals("ACME Corporation", name.value)
     }

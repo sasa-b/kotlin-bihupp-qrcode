@@ -13,6 +13,8 @@ class Account(
     companion object {
         const val MAX_LENGTH = 16
 
+        val EMPTY = Account("")
+
         fun of(value: String): Account = Account(value)
     }
 }

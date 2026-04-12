@@ -5,5 +5,7 @@ class Currency : Line() {
 
     companion object {
         const val MAX_LENGTH = 3
+
+        val EMPTY = Currency()
     }
 }

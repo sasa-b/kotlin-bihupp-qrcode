@@ -10,14 +10,18 @@ class Name(
         value.checkLengthAndChars("Name", MAX_LENGTH)
     }
 
+    constructor(firstName: String, lastName: String) : this("$firstName $lastName".trim())
+
     companion object {
         const val MAX_LENGTH = 50
+
+        val EMPTY = Name("")
 
         fun of(
             firstName: String,
             lastName: String,
-        ) = Name("$firstName $lastName".trim())
+        ) = Name(firstName, lastName)
 
-        fun business(name: String) = Name(name)
+        fun of(name: String) = Name(name)
     }
 }

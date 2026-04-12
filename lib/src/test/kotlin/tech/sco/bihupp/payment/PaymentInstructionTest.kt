@@ -70,7 +70,7 @@ class PaymentInstructionTest {
     fun `converts public revenue instruction to string with all lines in correct order`() {
         val instruction =
             PaymentInstruction(
-                sender = sender(Name.business("Example Company d.o.o.")),
+                sender = sender(Name.of("Example Company d.o.o.")),
                 recipient = recipient(Name("Trezor")),
                 purpose = PaymentPurpose.of("Tax payment"),
                 reference = null,
@@ -149,7 +149,7 @@ class PaymentInstructionTest {
                     ),
                 recipient =
                     Recipient(
-                        name = Name.business("VODOVOD MOSTAR"),
+                        name = Name.of("VODOVOD MOSTAR"),
                         address =
                             Address(
                                 addressLine1 = AddressLine1.of("ALEKSE ŠANTIĆA", ""),
@@ -210,7 +210,7 @@ class PaymentInstructionTest {
                     ),
                 recipient =
                     Recipient(
-                        name = Name.business("VODOVOD MOSTAR"),
+                        name = Name.of("VODOVOD MOSTAR"),
                         address =
                             Address(
                                 addressLine1 = AddressLine1.of("ALEKSE ŠANTIĆA", ""),
@@ -278,7 +278,7 @@ class PaymentInstructionTest {
                     ),
                 recipient =
                     Recipient(
-                        name = Name.business(maxName),
+                        name = Name.of(maxName),
                         address =
                             Address(
                                 addressLine1 = AddressLine1.of(maxAddr1, ""),
@@ -356,7 +356,7 @@ class PaymentInstructionTest {
                     ),
                 recipient =
                     Recipient(
-                        name = Name.business(maxName),
+                        name = Name.of(maxName),
                         address =
                             Address(
                                 addressLine1 = AddressLine1.of(maxAddr1, ""),

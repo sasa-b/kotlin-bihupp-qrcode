@@ -5,7 +5,11 @@ private val ALLOWED_CHARS_REGEX = Regex("""[^0-9a-zA-ZčćđšžČĆĐŠŽ ,:.?(
 abstract class Line {
     abstract val value: String
 
-    override fun toString() = "$value\n"
+    override fun toString() = "$value$SEPARATOR"
+
+    companion object {
+        const val SEPARATOR = "\n"
+    }
 }
 
 class EmptyLine : Line() {

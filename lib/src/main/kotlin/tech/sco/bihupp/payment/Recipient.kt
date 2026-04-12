@@ -20,9 +20,15 @@ class RecipientAccount private constructor(
         value.checkLengthAndChars("RecipientAccount", MAX_LENGTH)
     }
 
+    constructor(vararg accounts: Account) : this(accounts.joinToString(",") { it.value })
+    constructor(accounts: List<Account>) : this(accounts.joinToString(",") { it.value })
+    constructor(account: Account) : this(account.value)
+
     companion object {
         const val MAX_LENGTH = 339
         const val MAX_ACCOUNTS = 20
+
+        val EMPTY = RecipientAccount(Account.EMPTY)
 
         fun of(vararg accounts: Account): RecipientAccount {
             check(accounts.isNotEmpty()) {

@@ -8,5 +8,7 @@ class Version : Line() {
 
     companion object {
         const val MAX_LENGTH = 8
+
+        val EMPTY = Version()
     }
 }

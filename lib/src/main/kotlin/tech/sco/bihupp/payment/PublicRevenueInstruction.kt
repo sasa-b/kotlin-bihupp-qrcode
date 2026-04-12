@@ -29,6 +29,8 @@ data class PublicRevenueInstruction(
         companion object {
             const val MAX_LENGTH = 10
 
+            val EMPTY = PaymentReference("0".padStart(MAX_LENGTH, '0'))
+
             fun of(value: String): PaymentReference = PaymentReference(value)
         }
     }
@@ -46,6 +48,8 @@ class SenderTaxId(
 
     companion object {
         const val MAX_LENGTH = 13
+
+        val EMPTY = SenderTaxId("0".padStart(MAX_LENGTH, '0'))
     }
 }
 
@@ -61,6 +65,8 @@ class PaymentType(
 
     companion object {
         const val MAX_LENGTH = 1
+
+        val EMPTY = PaymentType("0".padStart(MAX_LENGTH, '0'))
     }
 }
 
@@ -76,6 +82,8 @@ class RevenueType(
 
     companion object {
         const val MAX_LENGTH = 6
+
+        val EMPTY = RevenueType("0".padStart(MAX_LENGTH, '0'))
     }
 }
 
@@ -86,12 +94,18 @@ class RevenueType(
 class TaxPeriodDate private constructor(
     override val value: String,
 ) : Line() {
+    constructor(date: LocalDate) : this(
+        date.format(FORMATTER),
+    )
+
     companion object {
         const val MAX_LENGTH = 8
 
+        val EMPTY = TaxPeriodDate("")
+
         private val FORMATTER = DateTimeFormatter.ofPattern("ddMMyyyy")
 
-        fun of(date: LocalDate): TaxPeriodDate = TaxPeriodDate(date.format(FORMATTER))
+        fun of(date: LocalDate): TaxPeriodDate = TaxPeriodDate(date)
     }
 }
 
@@ -107,6 +121,8 @@ class MunicipalCode(
 
     companion object {
         const val MAX_LENGTH = 3
+
+        val EMPTY = MunicipalCode("0".padStart(MAX_LENGTH, '0'))
 
         fun of(value: String): MunicipalCode = MunicipalCode(value)
     }
@@ -124,6 +140,8 @@ class BudgetOrgCode(
 
     companion object {
         const val MAX_LENGTH = 7
+
+        val EMPTY = BudgetOrgCode("0".padStart(MAX_LENGTH, '0'))
 
         fun of(value: String): BudgetOrgCode = BudgetOrgCode(value)
     }

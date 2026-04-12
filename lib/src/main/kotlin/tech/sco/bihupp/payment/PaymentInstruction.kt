@@ -1,7 +1,7 @@
 package tech.sco.bihupp.payment
 
 import qrcode.QRCode
-import tech.sco.bihupp.of
+import tech.sco.bihupp.qrcode.of
 
 /**
  * Represents a BIHUPP payment instruction text payload.
@@ -68,7 +68,9 @@ class PaymentPurpose private constructor(
     companion object {
         const val MAX_LENGTH = 110
 
-        fun of(value: String): PaymentPurpose = PaymentPurpose(value.replace("\n", " "))
+        val EMPTY = PaymentPurpose("")
+
+        fun of(value: String): PaymentPurpose = PaymentPurpose(value.replace(SEPARATOR, " "))
     }
 }
 
@@ -84,6 +86,8 @@ data class PaymentReference(
 
     companion object {
         const val MAX_LENGTH = 30
+
+        val EMPTY = PaymentReference("")
 
         fun of(value: String): PaymentReference = PaymentReference(value)
     }
