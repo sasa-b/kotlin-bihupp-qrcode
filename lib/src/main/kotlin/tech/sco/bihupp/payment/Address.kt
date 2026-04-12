@@ -15,6 +15,8 @@ data class AddressLine1(
         value.checkLengthAndChars("AddressLine1", MAX_LENGTH)
     }
 
+    override fun toString() = super.toString()
+
     constructor(
         street: String,
         number: String,

@@ -34,6 +34,20 @@ data class PublicRevenueInstruction(
             fun of(value: String): PaymentReference = PaymentReference(value)
         }
     }
+
+    companion object {
+        val EMPTY =
+            PublicRevenueInstruction(
+                senderTaxId = SenderTaxId.EMPTY,
+                paymentType = PaymentType.EMPTY,
+                revenueType = RevenueType.EMPTY,
+                taxPeriodStartDate = TaxPeriodDate.EMPTY,
+                taxPeriodEndDate = TaxPeriodDate.EMPTY,
+                municipalCode = MunicipalCode.EMPTY,
+                budgetCode = BudgetOrgCode.EMPTY,
+                paymentReference = PaymentReference.EMPTY,
+            )
+    }
 }
 
 /** JMBG */

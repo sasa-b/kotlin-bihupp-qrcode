@@ -2,59 +2,62 @@ package tech.sco.bihupp.payment
 
 import java.time.LocalDate
 
+// [0]=version, [1]=senderName, [2]=senderAddr1, [3]=senderAddr2, [4]=phone,
+// [5]=purpose, [6]=reference, [7]=recipientName, [8]=recipientAddr1, [9]=recipientAddr2,
+// [10]=senderAccount, [11]=recipientAccount, [12]=amount, [13]=currency, [14]=priority,
+// [15..22]=public revenue fields
+@Suppress("MagicNumber")
 internal fun List<Line>.toPaymentInstruction() =
     PaymentInstruction(
-        recipient = toRecipient(),
-        purpose = toPurpose(),
-        amount = toAmount(),
         sender = toSender(),
-        reference = toPaymentReference(),
-        paymentPriority = toPaymentPriority(),
-        publicRevenue = toPublicRevenueInstruction(),
+        recipient = toRecipient(),
+        purpose = getOrNull(5) as? PaymentPurpose ?: PaymentPurpose.EMPTY,
+        reference = (getOrNull(6) as? PaymentReference)?.takeIf { it.value.isNotEmpty() },
+        amount = getOrNull(12) as? Amount ?: Amount.EMPTY,
+        paymentPriority = getOrNull(14) as? PaymentPriority ?: PaymentPriority.regular(),
+        publicRevenue =
+            toPublicRevenueInstruction().let {
+                if (it == PublicRevenueInstruction.EMPTY) null else it
+            },
     )
 
+@Suppress("MagicNumber")
 internal fun List<Line>.toRecipient() =
     Recipient(
-        name = (find { it is Name } as? Name) ?: Name.EMPTY,
+        name = getOrNull(7) as? Name ?: Name.EMPTY,
         address =
             Address(
-                addressLine1 = (find { it is AddressLine1 } as? AddressLine1) ?: AddressLine1.EMPTY,
-                addressLine2 = (find { it is AddressLine2 } as? AddressLine2) ?: AddressLine2.EMPTY,
+                addressLine1 = getOrNull(8) as? AddressLine1 ?: AddressLine1.EMPTY,
+                addressLine2 = getOrNull(9) as? AddressLine2 ?: AddressLine2.EMPTY,
             ),
-        account = (find { it is RecipientAccount } as? RecipientAccount) ?: RecipientAccount.EMPTY,
+        account = getOrNull(11) as? RecipientAccount ?: RecipientAccount.EMPTY,
     )
 
+@Suppress("MagicNumber")
 internal fun List<Line>.toSender() =
     Sender(
-        name = (find { it is Name } as? Name) ?: Name(""),
+        name = getOrNull(1) as? Name ?: Name.EMPTY,
         address =
             Address(
-                addressLine1 = (find { it is AddressLine1 } as? AddressLine1) ?: AddressLine1.EMPTY,
-                addressLine2 = (find { it is AddressLine2 } as? AddressLine2) ?: AddressLine2.EMPTY,
+                addressLine1 = getOrNull(2) as? AddressLine1 ?: AddressLine1.EMPTY,
+                addressLine2 = getOrNull(3) as? AddressLine2 ?: AddressLine2.EMPTY,
             ),
-        account = (find { it is Account } as? Account) ?: Account.EMPTY,
-        phoneNumber = find { it is PhoneNumber } as? PhoneNumber,
+        account = getOrNull(10) as? Account ?: Account.EMPTY,
+        phoneNumber = getOrNull(4) as? PhoneNumber,
     )
 
-internal fun List<Line>.toPaymentPriority() = (find { it is PaymentPriority } as? PaymentPriority) ?: PaymentPriority.regular()
-
-internal fun List<Line>.toPaymentReference() = (find { it is PaymentReference } as? PaymentReference) ?: PaymentReference.EMPTY
-
-internal fun List<Line>.toPurpose() = (find { it is PaymentPurpose } as? PaymentPurpose) ?: PaymentPurpose.EMPTY
-
-internal fun List<Line>.toAmount() = (find { it is Amount } as? Amount) ?: Amount.EMPTY
-
+@Suppress("MagicNumber")
 internal fun List<Line>.toPublicRevenueInstruction() =
     PublicRevenueInstruction(
-        senderTaxId = (find { it is SenderTaxId } as? SenderTaxId) ?: SenderTaxId.EMPTY,
-        paymentType = (find { it is PaymentType } as? PaymentType) ?: PaymentType.EMPTY,
-        revenueType = (find { it is RevenueType } as? RevenueType) ?: RevenueType.EMPTY,
-        taxPeriodStartDate = (find { it is TaxPeriodDate } as? TaxPeriodDate) ?: TaxPeriodDate.EMPTY,
-        taxPeriodEndDate = (find { it is TaxPeriodDate } as? TaxPeriodDate) ?: TaxPeriodDate.EMPTY,
-        municipalCode = (find { it is MunicipalCode } as? MunicipalCode) ?: MunicipalCode.EMPTY,
-        budgetCode = (find { it is BudgetOrgCode } as? BudgetOrgCode) ?: BudgetOrgCode.EMPTY,
+        senderTaxId = getOrNull(15) as? SenderTaxId ?: SenderTaxId.EMPTY,
+        paymentType = getOrNull(16) as? PaymentType ?: PaymentType.EMPTY,
+        revenueType = getOrNull(17) as? RevenueType ?: RevenueType.EMPTY,
+        taxPeriodStartDate = getOrNull(18) as? TaxPeriodDate ?: TaxPeriodDate.EMPTY,
+        taxPeriodEndDate = getOrNull(19) as? TaxPeriodDate ?: TaxPeriodDate.EMPTY,
+        municipalCode = getOrNull(20) as? MunicipalCode ?: MunicipalCode.EMPTY,
+        budgetCode = getOrNull(21) as? BudgetOrgCode ?: BudgetOrgCode.EMPTY,
         paymentReference =
-            (find { it is PublicRevenueInstruction.PaymentReference } as? PublicRevenueInstruction.PaymentReference)
+            getOrNull(22) as? PublicRevenueInstruction.PaymentReference
                 ?: PublicRevenueInstruction.PaymentReference.EMPTY,
     )
 
@@ -68,19 +71,19 @@ internal fun String.splitToLines(): List<Line> =
                 }
 
                 1 -> {
-                    if (string.isEmpty()) EmptyLine() else Name(string)
+                    if (string.isEmpty()) Name.EMPTY else Name(string)
                 }
 
                 2 -> {
-                    if (string.isEmpty()) AddressLine1.EMPTY else AddressLine1.of(string, "")
+                    if (string.isEmpty()) AddressLine1.EMPTY else AddressLine1(string)
                 }
 
                 3 -> {
-                    if (string.isEmpty()) AddressLine2.EMPTY else AddressLine2.of(string, "")
+                    if (string.isEmpty()) AddressLine2.EMPTY else AddressLine2(string)
                 }
 
                 4 -> {
-                    if (string.isEmpty()) PhoneNumber.EMPTY else PhoneNumber.of(string)
+                    if (string.isEmpty()) EmptyLine() else PhoneNumber.of(string)
                 }
 
                 5 -> {
@@ -163,4 +166,4 @@ internal fun String.splitToLines(): List<Line> =
                     EmptyLine()
                 }
             }
-        }.filterNot { it is EmptyLine }
+        }
