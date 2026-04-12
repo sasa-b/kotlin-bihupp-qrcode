@@ -1,5 +1,8 @@
 package tech.sco.bihupp.payment
 
+import qrcode.QRCode
+import tech.sco.bihupp.of
+
 /**
  * Represents a BIHUPP payment instruction text payload.
  *
@@ -45,6 +48,8 @@ data class PaymentInstruction(
         }
 
     override fun toString(): String = lines().joinToString("")
+
+    fun toQRCode() = QRCode.of(this)
 }
 
 /**

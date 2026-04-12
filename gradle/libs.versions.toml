@@ -5,11 +5,25 @@
 commons-math3 = "3.6.1"
 guava = "33.5.0-jre"
 junit-jupiter-engine = "6.0.1"
+version-catalog-update = "1.0.1"
+qrcode = "4.3.0"
+git-version = "6.4.4"
+maven-deployer = "0.18.0"
+jfree-svg = "5.0.7"
+pinterest-ktlint = "14.0.1"
 
 [libraries]
 commons-math3 = { module = "org.apache.commons:commons-math3", version.ref = "commons-math3" }
 guava = { module = "com.google.guava:guava", version.ref = "guava" }
 junit-jupiter-engine = { module = "org.junit.jupiter:junit-jupiter-engine", version.ref = "junit-jupiter-engine" }
+junit-platform-launcher = { module = "org.junit.platform:junit-platform-launcher" }
+qrcode = { module = "io.github.g0dkar:qrcode-kotlin", version.ref = "qrcode" }
+jfree-svg = {module = "org.jfree:org.jfree.svg", version.ref = "jfree-svg" }
+# @keep
+pinterest-ktlint = { module = "com.pinterest:ktlint", version.ref = "pinterest-ktlint" }
 
 [plugins]
 kotlin-jvm = { id = "org.jetbrains.kotlin.jvm", version = "2.3.0" }
+git-version = { id = "me.qoomon.git-versioning", version.ref = "git-version" }
+maven-deployer = { id = "io.deepmedia.tools.deployer", version.ref = "maven-deployer" }
+version-catalog-update = { id = "nl.littlerobots.version-catalog-update", version.ref = "version-catalog-update" }

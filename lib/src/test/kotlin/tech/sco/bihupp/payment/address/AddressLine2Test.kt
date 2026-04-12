@@ -1,5 +1,6 @@
-package tech.sco.bihupp.payment
+package tech.sco.bihupp.payment.address
 
+import tech.sco.bihupp.payment.AddressLine2
 import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertFailsWith
