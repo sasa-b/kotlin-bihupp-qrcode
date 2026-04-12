@@ -3,6 +3,7 @@
 @file:DependsOn("com.fasterxml.jackson.module:jackson-module-kotlin:2.18.3")
 
 import com.fasterxml.jackson.annotation.JsonProperty
+import com.fasterxml.jackson.databind.DeserializationFeature
 import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import com.fasterxml.jackson.module.kotlin.readValue
 import kotlin.system.exitProcess
@@ -20,7 +21,9 @@ data class ToolCallData(
 }
 
 fun main() {
-    val mapper = jacksonObjectMapper()
+    val mapper =
+        jacksonObjectMapper()
+            .disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES)
 
     val jsonInput = System.`in`.bufferedReader().readText()
 

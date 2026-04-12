@@ -40,8 +40,8 @@ class QRCodeTest {
                         ),
                     account = RecipientAccount.of(Account("9876543210987654")),
                 ),
-            purpose = PaymentPurpose.of("Invoice payment"),
-            reference = PaymentReference("INV2024001"),
+            purpose = PaymentPurpose.of("Račun za el. energiju"),
+            reference = PaymentReference("2024001"),
             amount = Amount.of("10000"),
         )
 

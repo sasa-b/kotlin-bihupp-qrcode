@@ -1,10 +1,16 @@
 # kotlin-bihupp-qrcode
 
+<p style="text-align: center; width: 40mm; height: 40mm;">
+  <img src="doc/test.svg" alt="BIHUPP QR code example" width="250"/>
+</p>
+
 Kotlin biblioteka koja implementira BIHUPP10 standard QR koda za instrukcije bankovnog plaćanja u Bosni i Hercegovini.
 
 BIHUPP (_Bosansko-Hercegovački Unutrašnji Platni Promet_) definiše strukturirani tekstualni sadržaj koji se može enkodirati u obliku QR koda, koji banke skeniraju kako bi automatski popunile naloge za plaćanje. Ovaj format je ustanovljen od strane [Udruženja Banaka Bosne i Hercegovine](https://ubbih.ba/).
 
 Dodavanje QR koda u definisanom formatu na računima omogućava krajnjim korisnicima plaćanje pomoću skeniranja QR koda kroz njihovo mobilno bankarstvo.
+
+Za PHP biblioteku idite na [php-bihupp-qrcode](https://github.com/sasa-b/php-bihupp-qrcode).
 
 ---------------------------------------------------------
 
@@ -13,6 +19,8 @@ Kotlin library implementing the **BIHUPP** QR Code standard for bank payment ins
 BIHUPP (_Bosansko-Hercegovački Unutrašnji Platni Promet_) defines a structured text payload that can be encoded as a QR code that banks scan to pre-fill payment forms. This format was established by the [Association of Banks of Bosnia and Herzegovina](https://ubbih.ba/).
 
 Adding a QR code in the defined format to invoices enables end-users to make payments by scanning the QR code through their mobile banking app.
+
+For PHP library go to [php-bihupp-qrcode](https://github.com/sasa-b/php-bihupp-qrcode).
 
 ## Table of contents
 
