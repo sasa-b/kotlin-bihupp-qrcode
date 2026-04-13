@@ -45,6 +45,7 @@ For PHP library go to [php-bihupp-qrcode](https://github.com/sasa-b/php-bihupp-q
 - [Amount handling](#amount-handling)
 - [Payment priority](#payment-priority)
 - [Exception handling](#exception-handling)
+- [Scanning a QR code](#scanning-a-qr-code)
 - [Contribute](#contribute)
 - [License](#license)
 
@@ -80,10 +81,10 @@ implementation 'tech.s-co:kotlin-bihupp-qrcode:<version>'
 ## Quick start
 
 ```kotlin
-import tech.sco.bihupp.ImageFormat
+import tech.sco.bihupp.qrcode.ImageFormat
 import tech.sco.bihupp.payment.*
 import qrcode.QRCode
-import tech.sco.bihupp.of
+import tech.sco.bihupp.qrcode.of
 
 val instruction = PaymentInstruction(
     sender = Sender(
@@ -257,7 +258,7 @@ val svgBytes: ByteArray = svg.bytes
 ### Base64 data-URI link
 
 ```kotlin
-import tech.sco.bihupp.toBase64Link
+import tech.sco.bihupp.qrcode.toBase64Link
 
 val pngUri: String = QRCode.of(instruction).toBase64Link()
 // "data:image/png;base64,..."
@@ -356,6 +357,68 @@ try {
     // "Phone number must be in E.164 format starting with +."
 }
 ```
+
+## Scanning a QR code
+
+`QRCodeReader` decodes a QR code image back into a `PaymentInstruction`. It takes a `QRCodePixels` value — a width, height, and a flat ARGB pixel array — and returns a `QRCodeScanResult`.
+
+```kotlin
+import tech.sco.bihupp.qrcode.QRCodePixels
+import tech.sco.bihupp.qrcode.QRCodeReader
+import tech.sco.bihupp.qrcode.QRCodeScanResult
+
+val result = QRCodeReader.scan(pixels)
+
+when (result) {
+    is QRCodeScanResult.Success -> {
+        val instruction: PaymentInstruction = result.paymentInstruction
+        val rawPayload: String = result.rawPayload
+    }
+    is QRCodeScanResult.Failure -> {
+        val error: Throwable = result.error
+        val rawPayload: String? = result.rawPayload  // null if the image couldn't be decoded at all
+    }
+}
+```
+
+**Loading pixels on the JVM** — use `javax.imageio.ImageIO` and `BufferedImage.getRGB`:
+
+```kotlin
+import javax.imageio.ImageIO
+import tech.sco.bihupp.qrcode.QRCodePixels
+
+val image = ImageIO.read(File("qrcode.png"))
+val pixels = QRCodePixels(
+    width = image.width,
+    height = image.height,
+    argbPixels = image.getRGB(0, 0, image.width, image.height, null, 0, image.width),
+)
+```
+
+**Loading pixels on Android** — use `android.graphics.BitmapFactory` and `Bitmap.getPixels`:
+
+```kotlin
+import android.graphics.BitmapFactory
+import tech.sco.bihupp.qrcode.QRCodePixels
+
+val bitmap = BitmapFactory.decodeFile("qrcode.png")
+val argbPixels = IntArray(bitmap.width * bitmap.height)
+bitmap.getPixels(argbPixels, 0, bitmap.width, 0, 0, bitmap.width, bitmap.height)
+val pixels = QRCodePixels(bitmap.width, bitmap.height, argbPixels)
+```
+
+Scan errors are returned as `QRCodeScanResult.Failure` rather than thrown, covering both image-decoding failures (e.g. not a QR code) and payload-parsing failures (e.g. malformed BIHUPP content):
+
+```kotlin
+when (val result = QRCodeReader.scan(pixels)) {
+    is QRCodeScanResult.Success -> { /* use result.paymentInstruction */ }
+    is QRCodeScanResult.Failure -> {
+        println(result.error.message)
+        // result.rawPayload is non-null when the image decoded but the payload was invalid
+    }
+}
+```
+
 
 ## Contribute
 
