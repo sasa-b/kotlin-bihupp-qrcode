@@ -9,7 +9,6 @@ import tech.sco.bihupp.payment.Name
 import tech.sco.bihupp.payment.PaymentInstruction
 import tech.sco.bihupp.payment.PaymentPurpose
 import tech.sco.bihupp.payment.PaymentReference
-import tech.sco.bihupp.payment.PhoneNumber
 import tech.sco.bihupp.payment.Recipient
 import tech.sco.bihupp.payment.RecipientAccount
 import tech.sco.bihupp.payment.Sender
@@ -18,10 +17,26 @@ import tech.sco.bihupp.qrcode.QRCodeReader
 import tech.sco.bihupp.qrcode.QRCodeScanResult
 import javax.imageio.ImageIO
 import kotlin.test.Test
+import kotlin.test.assertContains
 import kotlin.test.assertEquals
 import kotlin.test.assertIs
 
 class QRCodeReaderTest {
+    /**
+     * Getting image pixels is platform-specific, test cases covers the JVM Server Side example.
+     * On Android it would look something like:
+     *
+     *  val argbPixels = IntArray(bitmap.width * bitmap.height)
+     *   bitmap.getPixels(
+     *       argbPixels, // destination array
+     *       0, // offset — start writing at index 0
+     *       bitmap.width, // stride — row width (same as scansize above)
+     *       0, // startX
+     *       0, // startY
+     *       bitmap.width, // width — read all columns
+     *       bitmap.height, // height — read all rows
+     *   )
+     */
     @Test
     fun `scans example png and decodes it to the expected payment instruction`() {
         val image = ImageIO.read(javaClass.getResourceAsStream("/example.png"))
@@ -29,7 +44,16 @@ class QRCodeReaderTest {
             QRCodePixels(
                 width = image.width,
                 height = image.height,
-                argbPixels = image.getRGB(0, 0, image.width, image.height, null, 0, image.width),
+                argbPixels =
+                    image.getRGB(
+                        0, // startX - Start at the leftmost column
+                        0, // startY - Start at the topmost row
+                        image.width, // Read all columns
+                        image.height, // Read all rows
+                        null, // destination array - Don't reuse an existing array — allocate a new one and return it
+                        0, // offset - Write into the new array starting at index 0
+                        image.width, // scanline width - Each row in the output array is image.width pixels wide
+                    ),
             )
 
         val result = QRCodeReader.scan(pixels)
@@ -65,5 +89,26 @@ class QRCodeReaderTest {
             )
 
         assertEquals(expected.toString(), result.paymentInstruction.toString())
+
+        assertContains(
+            result.rawPayload,
+            """
+            BIHUPP10
+            Marko Marković
+            Ulica Meše Selimovića 12
+            78000 Banja Luka
+
+            Račun za el. energiju
+            2024001
+            Pero Perić
+            Titova 1
+            71000 Sarajevo
+            1234567890123456
+            9876543210987654
+            000000000010000
+            BAM
+            N
+            """.trimIndent(),
+        )
     }
 }
