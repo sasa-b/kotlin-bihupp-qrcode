@@ -11,10 +11,10 @@ internal fun List<Line>.toPaymentInstruction() =
     PaymentInstruction(
         sender = toSender(),
         recipient = toRecipient(),
-        purpose = getOrNull(5) as? PaymentPurpose ?: PaymentPurpose.EMPTY,
-        reference = (getOrNull(6) as? PaymentReference)?.takeIf { it.value.isNotEmpty() },
-        amount = getOrNull(12) as? Amount ?: Amount.EMPTY,
-        paymentPriority = getOrNull(14) as? PaymentPriority ?: PaymentPriority.regular(),
+        purpose = this[5] as? PaymentPurpose ?: PaymentPurpose.EMPTY,
+        reference = (this[6] as? PaymentReference)?.takeIf { it.value.isNotEmpty() },
+        amount = this[12] as? Amount ?: Amount.EMPTY,
+        paymentPriority = this[14] as? PaymentPriority ?: PaymentPriority.regular(),
         publicRevenue =
             toPublicRevenueInstruction().let {
                 if (it == PublicRevenueInstruction.EMPTY) null else it
@@ -24,40 +24,40 @@ internal fun List<Line>.toPaymentInstruction() =
 @Suppress("MagicNumber")
 internal fun List<Line>.toRecipient() =
     Recipient(
-        name = getOrNull(7) as? Name ?: Name.EMPTY,
+        name = this[7] as? Name ?: Name.EMPTY,
         address =
             Address(
-                addressLine1 = getOrNull(8) as? AddressLine1 ?: AddressLine1.EMPTY,
-                addressLine2 = getOrNull(9) as? AddressLine2 ?: AddressLine2.EMPTY,
+                addressLine1 = this[8] as? AddressLine1 ?: AddressLine1.EMPTY,
+                addressLine2 = this[9] as? AddressLine2 ?: AddressLine2.EMPTY,
             ),
-        account = getOrNull(11) as? RecipientAccount ?: RecipientAccount.EMPTY,
+        account = this[11] as? RecipientAccount ?: RecipientAccount.EMPTY,
     )
 
 @Suppress("MagicNumber")
 internal fun List<Line>.toSender() =
     Sender(
-        name = getOrNull(1) as? Name ?: Name.EMPTY,
+        name = this[1] as? Name ?: Name.EMPTY,
         address =
             Address(
-                addressLine1 = getOrNull(2) as? AddressLine1 ?: AddressLine1.EMPTY,
-                addressLine2 = getOrNull(3) as? AddressLine2 ?: AddressLine2.EMPTY,
+                addressLine1 = this[2] as? AddressLine1 ?: AddressLine1.EMPTY,
+                addressLine2 = this[3] as? AddressLine2 ?: AddressLine2.EMPTY,
             ),
-        account = getOrNull(10) as? Account ?: Account.EMPTY,
-        phoneNumber = getOrNull(4) as? PhoneNumber,
+        account = this[10] as? Account ?: Account.EMPTY,
+        phoneNumber = this[4] as? PhoneNumber,
     )
 
 @Suppress("MagicNumber")
 internal fun List<Line>.toPublicRevenueInstruction() =
     PublicRevenueInstruction(
-        senderTaxId = getOrNull(15) as? SenderTaxId ?: SenderTaxId.EMPTY,
-        paymentType = getOrNull(16) as? PaymentType ?: PaymentType.EMPTY,
-        revenueType = getOrNull(17) as? RevenueType ?: RevenueType.EMPTY,
-        taxPeriodStartDate = getOrNull(18) as? TaxPeriodDate ?: TaxPeriodDate.EMPTY,
-        taxPeriodEndDate = getOrNull(19) as? TaxPeriodDate ?: TaxPeriodDate.EMPTY,
-        municipalCode = getOrNull(20) as? MunicipalCode ?: MunicipalCode.EMPTY,
-        budgetCode = getOrNull(21) as? BudgetOrgCode ?: BudgetOrgCode.EMPTY,
+        senderTaxId = this[15] as? SenderTaxId ?: SenderTaxId.EMPTY,
+        paymentType = this[16] as? PaymentType ?: PaymentType.EMPTY,
+        revenueType = this[17] as? RevenueType ?: RevenueType.EMPTY,
+        taxPeriodStartDate = this[18] as? TaxPeriodDate ?: TaxPeriodDate.EMPTY,
+        taxPeriodEndDate = this[19] as? TaxPeriodDate ?: TaxPeriodDate.EMPTY,
+        municipalCode = this[20] as? MunicipalCode ?: MunicipalCode.EMPTY,
+        budgetCode = this[21] as? BudgetOrgCode ?: BudgetOrgCode.EMPTY,
         paymentReference =
-            getOrNull(22) as? PublicRevenueInstruction.PaymentReference
+            this[22] as? PublicRevenueInstruction.PaymentReference
                 ?: PublicRevenueInstruction.PaymentReference.EMPTY,
     )
 
@@ -67,19 +67,19 @@ internal fun String.splitToLines(): List<Line> =
         .mapIndexed { index, string ->
             when (index) {
                 0 -> {
-                    if (string.isEmpty()) Version.EMPTY else Version()
+                    Version()
                 }
 
                 1 -> {
-                    if (string.isEmpty()) Name.EMPTY else Name(string)
+                    if (string.isEmpty()) EmptyLine() else Name(string)
                 }
 
                 2 -> {
-                    if (string.isEmpty()) AddressLine1.EMPTY else AddressLine1(string)
+                    if (string.isEmpty()) EmptyLine() else AddressLine1(string)
                 }
 
                 3 -> {
-                    if (string.isEmpty()) AddressLine2.EMPTY else AddressLine2(string)
+                    if (string.isEmpty()) EmptyLine() else AddressLine2(string)
                 }
 
                 4 -> {
@@ -87,43 +87,43 @@ internal fun String.splitToLines(): List<Line> =
                 }
 
                 5 -> {
-                    if (string.isEmpty()) PaymentPurpose.EMPTY else PaymentPurpose.of(string)
+                    if (string.isEmpty()) EmptyLine() else PaymentPurpose.of(string)
                 }
 
                 6 -> {
-                    if (string.isEmpty()) PaymentReference.EMPTY else PaymentReference(string)
+                    if (string.isEmpty()) EmptyLine() else PaymentReference(string)
                 }
 
                 7 -> {
-                    if (string.isEmpty()) Name.EMPTY else Name(string)
+                    if (string.isEmpty()) EmptyLine() else Name(string)
                 }
 
                 8 -> {
-                    if (string.isEmpty()) AddressLine1.EMPTY else AddressLine1(string)
+                    if (string.isEmpty()) EmptyLine() else AddressLine1(string)
                 }
 
                 9 -> {
-                    if (string.isEmpty()) AddressLine2.EMPTY else AddressLine2(string)
+                    if (string.isEmpty()) EmptyLine() else AddressLine2(string)
                 }
 
                 10 -> {
-                    if (string.isEmpty()) Account.EMPTY else Account(string)
+                    if (string.isEmpty()) EmptyLine() else Account(string)
                 }
 
                 11 -> {
                     if (string.isEmpty()) {
-                        RecipientAccount.EMPTY
+                        EmptyLine()
                     } else {
                         RecipientAccount.of(string.split(",").map { Account(it) })
                     }
                 }
 
                 12 -> {
-                    if (string.isEmpty()) Amount.EMPTY else Amount.of(string)
+                    if (string.isEmpty()) EmptyLine() else Amount.of(string)
                 }
 
                 13 -> {
-                    if (string.isEmpty()) Currency.EMPTY else Currency()
+                    if (string.isEmpty()) EmptyLine() else Currency()
                 }
 
                 14 -> {
@@ -131,35 +131,35 @@ internal fun String.splitToLines(): List<Line> =
                 }
 
                 15 -> {
-                    if (string.isEmpty()) SenderTaxId.EMPTY else SenderTaxId(string)
+                    if (string.isEmpty()) EmptyLine() else SenderTaxId(string)
                 }
 
                 16 -> {
-                    if (string.isEmpty()) PaymentType.EMPTY else PaymentType(string)
+                    if (string.isEmpty()) EmptyLine() else PaymentType(string)
                 }
 
                 17 -> {
-                    if (string.isEmpty()) RevenueType.EMPTY else RevenueType(string)
+                    if (string.isEmpty()) EmptyLine() else RevenueType(string)
                 }
 
                 18 -> {
-                    if (string.isEmpty()) TaxPeriodDate.EMPTY else TaxPeriodDate.of(LocalDate.parse(string))
+                    if (string.isEmpty()) EmptyLine() else TaxPeriodDate.of(LocalDate.parse(string))
                 }
 
                 19 -> {
-                    if (string.isEmpty()) TaxPeriodDate.EMPTY else TaxPeriodDate.of(LocalDate.parse(string))
+                    if (string.isEmpty()) EmptyLine() else TaxPeriodDate.of(LocalDate.parse(string))
                 }
 
                 20 -> {
-                    if (string.isEmpty()) MunicipalCode.EMPTY else MunicipalCode(string)
+                    if (string.isEmpty()) EmptyLine() else MunicipalCode(string)
                 }
 
                 21 -> {
-                    if (string.isEmpty()) BudgetOrgCode.EMPTY else BudgetOrgCode(string)
+                    if (string.isEmpty()) EmptyLine() else BudgetOrgCode(string)
                 }
 
                 22 -> {
-                    if (string.isEmpty()) PaymentReference.EMPTY else PublicRevenueInstruction.PaymentReference(string)
+                    if (string.isEmpty()) EmptyLine() else PublicRevenueInstruction.PaymentReference(string)
                 }
 
                 else -> {
