@@ -7,35 +7,35 @@ import kotlin.test.assertFailsWith
 
 class BudgetOrgCodeTest {
     @Test
-    fun `creates with valid code`() {
+    fun `it creates with valid code`() {
         val code = BudgetOrgCode("1200200")
 
         assertEquals("1200200", code.value)
     }
 
     @Test
-    fun `converts to string that ends with lf char`() {
+    fun `it converts to string that ends with lf char`() {
         val code = BudgetOrgCode("1200200")
 
         assertEquals("1200200\n", code.toString())
     }
 
     @Test
-    fun `throws exception when exceeding 7 digits`() {
+    fun `it throws exception when exceeding 7 digits`() {
         assertFailsWith<IllegalStateException> {
             BudgetOrgCode("12002001")
         }
     }
 
     @Test
-    fun `throws exception when fewer than 7 digits`() {
+    fun `it throws exception when fewer than 7 digits`() {
         assertFailsWith<IllegalStateException> {
             BudgetOrgCode("120020")
         }
     }
 
     @Test
-    fun `throws exception when non-numeric characters are provided`() {
+    fun `it throws exception when non-numeric characters are provided`() {
         assertFailsWith<IllegalStateException> {
             BudgetOrgCode("120@200")
         }

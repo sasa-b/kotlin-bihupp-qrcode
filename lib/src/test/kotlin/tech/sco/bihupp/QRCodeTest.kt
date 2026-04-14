@@ -51,7 +51,7 @@ class QRCodeTest {
         )
 
     @Test
-    fun `converts to a QRCode in PNG format`() {
+    fun `it converts to a QRCode in PNG format`() {
         val result = QRCode.of(payment, ImageFormat.PNG)
 
         assertEquals(ImageFormat.PNG, result.format)
@@ -67,7 +67,7 @@ class QRCodeTest {
     }
 
     @Test
-    fun `converts to a QRCode in SVG format`() {
+    fun `it converts to a QRCode in SVG format`() {
         val result = QRCode.of(payment, ImageFormat.SVG)
 
         assertEquals(ImageFormat.SVG, result.format)
@@ -76,14 +76,14 @@ class QRCodeTest {
     }
 
     @Test
-    fun `converts to a PNG QRCode that is a Base64 link`() {
+    fun `it converts to a PNG QRCode that is a Base64 link`() {
         val result = QRCode.of(payment, ImageFormat.PNG).toBase64Link()
 
         assertTrue(result.startsWith("data:image/png;base64,"))
     }
 
     @Test
-    fun `converts to a SVG QRCode that is a Base64 link`() {
+    fun `it converts to a SVG QRCode that is a Base64 link`() {
         val result = QRCode.of(payment, ImageFormat.SVG).toBase64Link()
 
         assertTrue(result.startsWith("data:image/svg+xml;base64,"))

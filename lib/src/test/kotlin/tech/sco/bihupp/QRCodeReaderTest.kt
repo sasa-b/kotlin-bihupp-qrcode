@@ -1,5 +1,6 @@
 package tech.sco.bihupp
 
+import qrcode.QRCode
 import tech.sco.bihupp.payment.Account
 import tech.sco.bihupp.payment.Address
 import tech.sco.bihupp.payment.AddressLine1
@@ -15,11 +16,13 @@ import tech.sco.bihupp.payment.Sender
 import tech.sco.bihupp.qrcode.QRCodePixels
 import tech.sco.bihupp.qrcode.QRCodeReader
 import tech.sco.bihupp.qrcode.QRCodeScanResult
+import java.io.ByteArrayInputStream
 import javax.imageio.ImageIO
 import kotlin.test.Test
 import kotlin.test.assertContains
 import kotlin.test.assertEquals
 import kotlin.test.assertIs
+import kotlin.test.assertNull
 
 class QRCodeReaderTest {
     /**
@@ -38,7 +41,7 @@ class QRCodeReaderTest {
      *   )
      */
     @Test
-    fun `scans example png and decodes it to the expected payment instruction`() {
+    fun `it scans example png and decodes it to the expected payment instruction`() {
         val image = ImageIO.read(javaClass.getResourceAsStream("/example.png"))
         val pixels =
             QRCodePixels(
@@ -110,5 +113,40 @@ class QRCodeReaderTest {
             N
             """.trimIndent(),
         )
+    }
+
+    @Test
+    fun `returns failure with null payload when image contains no qr code`() {
+        val width = 100
+        val height = 100
+        val pixels =
+            QRCodePixels(
+                width = width,
+                height = height,
+                argbPixels = IntArray(width * height) { 0xFFFFFFFF.toInt() },
+            )
+
+        val result = QRCodeReader.scan(pixels)
+
+        assertIs<QRCodeScanResult.Failure>(result)
+        assertNull(result.rawPayload)
+    }
+
+    @Test
+    fun `it returns failure with raw payload when qr code content is not a valid bihupp payload`() {
+        val content = "not a valid BIHUPP payload"
+        val pngBytes = QRCode.ofSquares().build(content).renderToBytes()
+        val image = ImageIO.read(ByteArrayInputStream(pngBytes))
+        val pixels =
+            QRCodePixels(
+                width = image.width,
+                height = image.height,
+                argbPixels = image.getRGB(0, 0, image.width, image.height, null, 0, image.width),
+            )
+
+        val result = QRCodeReader.scan(pixels)
+
+        assertIs<QRCodeScanResult.Failure>(result)
+        assertEquals(content, result.rawPayload)
     }
 }

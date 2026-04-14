@@ -6,14 +6,14 @@ import kotlin.test.assertTrue
 
 class VersionTest {
     @Test
-    fun `creates with valid version`() {
+    fun `it creates with valid version`() {
         val version = Version()
 
         assertEquals("BIHUPP10", version.value)
     }
 
     @Test
-    fun `converts to string that ends with lf char`() {
+    fun `it converts to string that ends with lf char`() {
         val version = Version()
 
         assertEquals("BIHUPP10\n", version.toString())

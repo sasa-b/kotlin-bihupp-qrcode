@@ -7,21 +7,21 @@ import kotlin.test.assertFailsWith
 
 class AddressLine1Test {
     @Test
-    fun `creates with valid street and number`() {
+    fun `it creates with valid street and number`() {
         val address = AddressLine1.of("Ulica Meše Selimovića", "12")
 
         assertEquals("Ulica Meše Selimovića 12", address.value)
     }
 
     @Test
-    fun `converts to string that ends with newline`() {
+    fun `it converts to string that ends with newline`() {
         val addressLine1 = AddressLine1.of("Ulica Kralja Petra 1. Karađorđevića", "3")
 
         assertEquals("Ulica Kralja Petra 1. Karađorđevića 3\n", addressLine1.toString())
     }
 
     @Test
-    fun `throws when value exceeds max length`() {
+    fun `it throws when value exceeds max length`() {
         // "a" * 50 + " " + "b" = 52 chars, exceeds limit of 50
         val exception =
             assertFailsWith<IllegalStateException> {
@@ -31,7 +31,7 @@ class AddressLine1Test {
     }
 
     @Test
-    fun `accepts value exactly at max length`() {
+    fun `it accepts value exactly at max length`() {
         // "a" * 45 + " " + "123" = 49 chars
         val street = "a".repeat(45)
         val number = "123"
@@ -42,7 +42,7 @@ class AddressLine1Test {
     }
 
     @Test
-    fun `throws when value contains invalid characters`() {
+    fun `it throws when value contains invalid characters`() {
         assertFailsWith<IllegalStateException> {
             AddressLine1.of("Main @Street", "123")
         }

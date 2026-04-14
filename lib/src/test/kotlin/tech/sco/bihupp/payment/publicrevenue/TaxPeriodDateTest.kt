@@ -8,14 +8,14 @@ import kotlin.test.assertTrue
 
 class TaxPeriodDateTest {
     @Test
-    fun `creates from local date`() {
+    fun `it creates from local date`() {
         val date = TaxPeriodDate.of(LocalDate.of(2024, 1, 15))
 
         assertEquals("15012024", date.value)
     }
 
     @Test
-    fun `converts to string that ends with lf char`() {
+    fun `it converts to string that ends with lf char`() {
         val date = TaxPeriodDate.of(LocalDate.of(2024, 1, 15))
 
         assertEquals("15012024\n", date.toString())
@@ -23,7 +23,7 @@ class TaxPeriodDateTest {
     }
 
     @Test
-    fun `pads single digit day and month with leading zeros`() {
+    fun `it pads single digit day and month with leading zeros`() {
         val date = TaxPeriodDate.of(LocalDate.of(2024, 3, 5))
 
         assertEquals("05032024", date.value)

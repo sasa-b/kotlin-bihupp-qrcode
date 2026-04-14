@@ -7,42 +7,42 @@ import kotlin.test.assertFailsWith
 
 class SenderTaxIdTest {
     @Test
-    fun `creates with valid jmbg`() {
+    fun `it creates with valid jmbg`() {
         val taxId = SenderTaxId("0101990123456")
 
         assertEquals("0101990123456", taxId.value)
     }
 
     @Test
-    fun `converts to string that ends with lf char`() {
+    fun `it converts to string that ends with lf char`() {
         val taxId = SenderTaxId("0101990123456")
 
         assertEquals("0101990123456\n", taxId.toString())
     }
 
     @Test
-    fun `throws exception when fewer than 13 digits`() {
+    fun `it throws exception when fewer than 13 digits`() {
         assertFailsWith<IllegalStateException> {
             SenderTaxId("010199012345")
         }
     }
 
     @Test
-    fun `throws exception when more than 13 digits`() {
+    fun `it throws exception when more than 13 digits`() {
         assertFailsWith<IllegalStateException> {
             SenderTaxId("01019901234567")
         }
     }
 
     @Test
-    fun `throws exception when non-numeric characters are provided`() {
+    fun `it throws exception when non-numeric characters are provided`() {
         assertFailsWith<IllegalStateException> {
             SenderTaxId("010199012345@")
         }
     }
 
     @Test
-    fun `throws exception when empty value is provided`() {
+    fun `it throws exception when empty value is provided`() {
         assertFailsWith<IllegalStateException> {
             SenderTaxId("")
         }

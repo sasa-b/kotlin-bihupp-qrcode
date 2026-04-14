@@ -6,7 +6,7 @@ import kotlin.test.assertFailsWith
 
 class RecipientAccountTest {
     @Test
-    fun `creates with valid account list`() {
+    fun `it creates with valid account list`() {
         val account =
             RecipientAccount.of(
                 Account("1234567890123456"),
@@ -17,14 +17,14 @@ class RecipientAccountTest {
     }
 
     @Test
-    fun `creates from single account`() {
+    fun `it creates from single account`() {
         val account = RecipientAccount.of(Account("1234567890123456"))
 
         assertEquals("1234567890123456", account.value)
     }
 
     @Test
-    fun `creates from multiple accounts`() {
+    fun `it creates from multiple accounts`() {
         val account =
             RecipientAccount.of(
                 Account("1234567890123456"),
@@ -35,28 +35,28 @@ class RecipientAccountTest {
     }
 
     @Test
-    fun `converts to string that ends with lf char`() {
+    fun `it converts to string that ends with lf char`() {
         val account = RecipientAccount.of(Account("1234567890123456"))
 
         assertEquals("1234567890123456\n", account.toString())
     }
 
     @Test
-    fun `throws exception when no accounts provided`() {
+    fun `it throws exception when no accounts provided`() {
         assertFailsWith<IllegalStateException> {
             RecipientAccount.of()
         }
     }
 
     @Test
-    fun `throws exception when exceeding max accounts`() {
+    fun `it throws exception when exceeding max accounts`() {
         assertFailsWith<IllegalStateException> {
             RecipientAccount.of(*Array(21) { Account("1234567890123456") })
         }
     }
 
     @Test
-    fun `accepts twenty accounts at max total length`() {
+    fun `it accepts twenty accounts at max total length`() {
         val account = RecipientAccount.of(*Array(20) { Account("1234567890123456") })
 
         assertEquals(339, account.value.length)

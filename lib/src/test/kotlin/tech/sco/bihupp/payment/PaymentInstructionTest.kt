@@ -8,7 +8,7 @@ import kotlin.test.assertNull
 
 class PaymentInstructionTest {
     @Test
-    fun `creates with valid payment instruction`() {
+    fun `it creates with valid payment instruction`() {
         val instruction =
             PaymentInstruction(
                 sender = sender(),
@@ -26,7 +26,7 @@ class PaymentInstructionTest {
     }
 
     @Test
-    fun `converts to string with all lines in correct order`() {
+    fun `it converts to string with all lines in correct order`() {
         val instruction =
             PaymentInstruction(
                 sender = sender(),
@@ -67,7 +67,7 @@ class PaymentInstructionTest {
     }
 
     @Test
-    fun `converts public revenue instruction to string with all lines in correct order`() {
+    fun `it converts public revenue instruction to string with all lines in correct order`() {
         val instruction =
             PaymentInstruction(
                 sender = sender(Name.of("Example Company d.o.o.")),
@@ -119,7 +119,7 @@ class PaymentInstructionTest {
     }
 
     @Test
-    fun `replaces reference with empty line when not provided`() {
+    fun `it replaces reference with empty line when not provided`() {
         val instruction =
             PaymentInstruction(
                 sender = sender(),
@@ -134,7 +134,7 @@ class PaymentInstructionTest {
     }
 
     @Test
-    fun `converts water bill example with sender to expected string`() {
+    fun `it converts water bill example with sender to expected string`() {
         val instruction =
             PaymentInstruction(
                 sender =
@@ -194,7 +194,7 @@ class PaymentInstructionTest {
     }
 
     @Test
-    fun `converts water bill example without sender to expected string`() {
+    fun `it converts water bill example without sender to expected string`() {
         // Sender fields are empty — the bank auto-populates them from the logged-in user's session
         val instruction =
             PaymentInstruction(
@@ -255,7 +255,7 @@ class PaymentInstructionTest {
     }
 
     @Test
-    fun `converts max field length example with utf8 characters to expected string`() {
+    fun `it converts max field length example with utf8 characters to expected string`() {
         val maxName = "Aa".repeat(25) // 50 chars
         val maxAddr1 = "Aa".repeat(25) // 50 chars
         val maxAddr2 = "Aa".repeat(12) + "A" // 25 chars
@@ -333,7 +333,7 @@ class PaymentInstructionTest {
     }
 
     @Test
-    fun `converts max field length example with ascii characters to expected string`() {
+    fun `it converts max field length example with ascii characters to expected string`() {
         val maxName = "Aa".repeat(25) // 50 chars
         val maxAddr1 = "Aa".repeat(25) // 50 chars
         val maxAddr2 = "Aa".repeat(12) + "A" // 25 chars
