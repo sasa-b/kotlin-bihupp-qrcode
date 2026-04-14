@@ -2,12 +2,14 @@
 
 @file:DependsOn("com.fasterxml.jackson.module:jackson-module-kotlin:2.18.3")
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties
 import com.fasterxml.jackson.annotation.JsonProperty
-import com.fasterxml.jackson.databind.DeserializationFeature
 import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import com.fasterxml.jackson.module.kotlin.readValue
+import java.nio.file.Paths
 import kotlin.system.exitProcess
 
+@JsonIgnoreProperties(ignoreUnknown = true)
 data class ToolCallData(
     @param:JsonProperty("session_id") val sessionId: String,
     @param:JsonProperty("transcript_path") val transcriptPath: String,
@@ -21,9 +23,7 @@ data class ToolCallData(
 }
 
 fun main() {
-    val mapper =
-        jacksonObjectMapper()
-            .disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES)
+    val mapper = jacksonObjectMapper()
 
     val jsonInput = System.`in`.bufferedReader().readText()
 
@@ -34,17 +34,25 @@ fun main() {
                 exitProcess(1)
             }
 
-    val projectRoot = System.getenv("PWD") ?: "/Users/sasablagojevic/Developer/Projects/projectx"
-    val readPath = toolCallData.toolInput.filePath
+    val projectRoot =
+        Paths
+            .get(
+                System.getenv("PWD") ?: run {
+                    System.err.println("PWD env var is not set")
+                    exitProcess(1)
+                },
+            ).normalize()
+
+    val readPath = Paths.get(toolCallData.toolInput.filePath).normalize()
 
     if (!readPath.startsWith(projectRoot)) {
         println("Attempting to read a file outside of the project root: $readPath")
         exitProcess(2)
     }
 
-    val fileName = readPath.substringAfterLast("/")
-    if (fileName == "local.properties") {
-        println("Attempting to read local.properties: $readPath")
+    val fileName = readPath.toString().substringAfterLast("/")
+    if (fileName == ".env" || fileName.startsWith(".env.")) {
+        println("Attempting to read an env file: $readPath")
         exitProcess(2)
     }
 }
