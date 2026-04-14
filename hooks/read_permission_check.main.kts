@@ -17,9 +17,13 @@ data class ToolCallData(
     @param:JsonProperty("tool_name") val toolName: String,
     @param:JsonProperty("tool_input") val toolInput: ToolInput,
 ) {
+    @JsonIgnoreProperties(ignoreUnknown = true)
     data class ToolInput(
-        @param:JsonProperty("file_path") val filePath: String,
-    )
+        @param:JsonProperty("file_path") val filePath: String? = null,
+        @param:JsonProperty("path") val path: String? = null,
+    ) {
+        fun resolvedPath(): String? = filePath ?: path
+    }
 }
 
 fun main() {
@@ -43,14 +47,20 @@ fun main() {
                 },
             ).normalize()
 
-    val readPath = Paths.get(toolCallData.toolInput.filePath).normalize()
+    val resolvedPath =
+        toolCallData.toolInput.resolvedPath() ?: run {
+            // No path provided — Grep/Glob default to CWD, which is within the project root
+            exitProcess(0)
+        }
+
+    val readPath = Paths.get(resolvedPath).normalize()
 
     if (!readPath.startsWith(projectRoot)) {
         println("Attempting to read a file outside of the project root: $readPath")
         exitProcess(2)
     }
 
-    val fileName = readPath.toString().substringAfterLast("/")
+    val fileName = readPath.fileName.toString()
     if (fileName == ".env" || fileName.startsWith(".env.")) {
         println("Attempting to read an env file: $readPath")
         exitProcess(2)
