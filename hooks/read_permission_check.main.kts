@@ -21,6 +21,7 @@ data class ToolCallData(
     data class ToolInput(
         @param:JsonProperty("file_path") val filePath: String? = null,
         @param:JsonProperty("path") val path: String? = null,
+        @param:JsonProperty("command") val command: String? = null,
     ) {
         fun resolvedPath(): String? = filePath ?: path
     }
@@ -47,6 +48,17 @@ fun main() {
                 },
             ).normalize()
 
+    // Block Bash commands that reference local.properties
+    val command = toolCallData.toolInput.command
+    if (command != null) {
+        // Match local.properties appearing as a standalone token (preceded/followed by whitespace, quotes, or string boundary)
+        val localPropertiesPattern = Regex("""(?:^|[\s'"])local\.properties(?=$|[\s'"])""")
+        if (localPropertiesPattern.containsMatchIn(command)) {
+            println("Attempting to read local.properties via Bash: $command")
+            exitProcess(2)
+        }
+    }
+
     val resolvedPath =
         toolCallData.toolInput.resolvedPath() ?: run {
             // No path provided — Grep/Glob default to CWD, which is within the project root
@@ -61,8 +73,8 @@ fun main() {
     }
 
     val fileName = readPath.fileName.toString()
-    if (fileName == ".env" || fileName.startsWith(".env.")) {
-        println("Attempting to read an env file: $readPath")
+    if (fileName == "local.properties") {
+        println("Attempting to read local.properties: $readPath")
         exitProcess(2)
     }
 }

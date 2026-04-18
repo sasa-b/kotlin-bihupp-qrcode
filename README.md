@@ -12,6 +12,8 @@ Dodavanje QR koda u definisanom formatu na računima omogućava krajnjim korisni
 
 Za PHP biblioteku idite na [php-bihupp-qrcode](https://github.com/sasa-b/php-bihupp-qrcode).
 
+**Da biste verifikovali validnost QR koda ili da ga generišete ručno, koristite [s-co.tech/bihupp-qrcode-verifikator](https://s-co.tech/bihupp-qrcode-verifikator)**
+
 ---------------------------------------------------------
 
 Kotlin library implementing the **BIHUPP** QR Code standard for bank payment instructions in Bosnia and Herzegovina.
@@ -21,6 +23,8 @@ BIHUPP (_Bosansko-Hercegovački Unutrašnji Platni Promet_) defines a structured
 Adding a QR code in the defined format to invoices enables end-users to make payments by scanning the QR code through their mobile banking app.
 
 For PHP library go to [php-bihupp-qrcode](https://github.com/sasa-b/php-bihupp-qrcode).
+
+**To verify validity of the QR Code or to generate one manually use [s-co.tech/bihupp-qrcode-verifikator](https://s-co.tech/bihupp-qrcode-verifikator)**
 
 ## Table of contents
 
